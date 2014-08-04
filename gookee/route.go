@@ -7,7 +7,7 @@ type Route struct {
 }
 
 var routeCollection map[int]Route
-var powerFunc interface{}
+var interceptFunc interface{}
 
 func init() {
 	routeCollection = make(map[int]Route)
@@ -18,5 +18,5 @@ func (r Route) Regist() {
 }
 
 func Func(f interface{}) {
-	powerFunc = f
+	interceptFunc = f
 }

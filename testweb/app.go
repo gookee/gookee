@@ -2,13 +2,13 @@ package main
 
 import (
 	"db"
-	"example/controller"
 	"fmt"
 	"gookee"
 	"io/ioutil"
 	"net/http"
 	"session"
 	"strings"
+	"testweb/controller"
 	"time"
 )
 
@@ -49,7 +49,7 @@ func power(httpcontext *gookee.HttpContext) bool {
 	w := httpcontext.ResponseWriter
 
 	url := r.URL.Path
-	if url != "/" && session.Start(w, r).Get("username") == "" {
+	if url != "/" && httpcontext.Session.Get("username") == "" {
 		http.Redirect(w, r, "/", http.StatusFound)
 		return false
 	}

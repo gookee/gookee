@@ -1,9 +1,9 @@
 package controller
 
 import (
-	. "example/model/dal"
 	"gookee"
 	"net/http"
+	. "testweb/model/dal"
 	"utility"
 )
 

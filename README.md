@@ -20,7 +20,7 @@ go web mvc框架
 		w := httpcontext.ResponseWriter
 
 		url := r.URL.Path
-		if url != "/" && session.Start(w, r).Get("username") == "" {
+		if url != "/" && httpcontext.Session.Get("username") == "" {
 			http.Redirect(w, r, "/", http.StatusFound)
 			return false
 		}

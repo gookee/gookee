@@ -66,8 +66,8 @@ func ExecHandler(w http.ResponseWriter, r *http.Request) {
 
 	httpContext := &HttpContext{t, w, r, session.Start(w, r)}
 
-	if powerFunc != nil {
-		reV := reflect.ValueOf(powerFunc)
+	if interceptFunc != nil {
+		reV := reflect.ValueOf(interceptFunc)
 		result := reV.Call([]reflect.Value{reflect.ValueOf(httpContext)})
 		if len(result) == 1 && result[0].Kind() == reflect.Bool && !result[0].Bool() {
 			return
