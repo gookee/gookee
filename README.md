@@ -5,8 +5,8 @@ go web mvc框架
 
 
 #注册路由
-	gookee.Route{"/{action}", "index", &controller.Home{}}.Regist()
-	gookee.Route{"/manage/{action}", "index", &controller.Manage{}}.Regist()
+	gookee.Route{"/{action}", "index", Home}.Regist()
+	gookee.Route{"/manage/{action}", "index", Manage}.Regist()
 
 #注册拦截器实现全局权限控制、注入等
 	gookee.Func(power)

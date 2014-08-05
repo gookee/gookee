@@ -7,9 +7,11 @@ import (
 	"utility"
 )
 
-type Home struct{}
+type home struct{}
 
-func (h *Home) UserinfoPost(httpcontext *gookee.HttpContext) {
+var Home *home = &home{}
+
+func (h *home) UserinfoPost(httpcontext *gookee.HttpContext) {
 	r := httpcontext.Request
 	w := httpcontext.ResponseWriter
 
@@ -44,7 +46,7 @@ func (h *Home) UserinfoPost(httpcontext *gookee.HttpContext) {
 	w.Write([]byte(""))
 }
 
-func (h *Home) IndexPost(httpcontext *gookee.HttpContext) {
+func (h *home) IndexPost(httpcontext *gookee.HttpContext) {
 	r := httpcontext.Request
 	w := httpcontext.ResponseWriter
 
@@ -60,7 +62,7 @@ func (h *Home) IndexPost(httpcontext *gookee.HttpContext) {
 	}
 }
 
-func (h *Home) LogoutGet(httpcontext *gookee.HttpContext) {
+func (h *home) LogoutGet(httpcontext *gookee.HttpContext) {
 	r := httpcontext.Request
 	w := httpcontext.ResponseWriter
 
@@ -69,14 +71,14 @@ func (h *Home) LogoutGet(httpcontext *gookee.HttpContext) {
 	return
 }
 
-func (h *Home) FrameworkGet(httpcontext *gookee.HttpContext) {
+func (h *home) FrameworkGet(httpcontext *gookee.HttpContext) {
 	w := httpcontext.ResponseWriter
 	t := httpcontext.Template
 
 	t.Execute(w, httpcontext.Session.Get("username"))
 }
 
-func (h *Home) FrameworkPost(httpcontext *gookee.HttpContext) {
+func (h *home) FrameworkPost(httpcontext *gookee.HttpContext) {
 	r := httpcontext.Request
 	w := httpcontext.ResponseWriter
 

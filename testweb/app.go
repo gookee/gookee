@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"session"
 	"strings"
-	"testweb/controller"
+	. "testweb/controller"
 	"time"
 )
 
@@ -29,7 +29,7 @@ func main() {
 	session.Init("", 0)
 	db.Init(dbConnectionString)
 
-	gookee.Route{"/{action}", "index", &controller.Home{}}.Regist()
+	gookee.Route{"/{action}", "index", Home}.Regist()
 	gookee.Func(power)
 
 	fmt.Println("web服务器正在运行中...")
