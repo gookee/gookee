@@ -42,6 +42,17 @@ func Exec(sqlStr string, values ...interface{}) int64 {
 	return affect
 }
 
+func ExecBatch(sqlStr string) int64 {
+	SqlDb, e := sql.Open(DbTypeName, DbConnectionString)
+	checkErr(e)
+	defer SqlDb.Close()
+	res, err := SqlDb.Exec(sqlStr)
+	checkErr(err)
+	affect, erraff := res.RowsAffected()
+	checkErr(erraff)
+	return affect
+}
+
 func ExecDt(sqlStr string, values ...interface{}) DataTable {
 	SqlDb, e := sql.Open(DbTypeName, DbConnectionString)
 	checkErr(e)
