@@ -11,6 +11,7 @@ import (
 	"regexp"
 	"strconv"
 	"strings"
+	"time"
 )
 
 func JsonEncode(json string) string {
@@ -43,6 +44,13 @@ func ToStr(obj interface{}) string {
 		return strconv.FormatFloat(obj.(float64), 'f', -1, 64)
 	case []byte:
 		return string(obj.([]byte))
+	case time.Time:
+		tmp := obj.(time.Time).Format("2006-01-02 15:04:05")
+		if tmp == "0001-01-01 00:00:00" {
+			return ""
+		} else {
+			return tmp
+		}
 	}
 	return ""
 }
