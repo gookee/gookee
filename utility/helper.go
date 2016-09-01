@@ -15,18 +15,20 @@ import (
 )
 
 func JsonEncode(json string) string {
-	json = strings.Replace(json, "'", "\\'", -1)
+	json = strings.Replace(json, "\\", "\\\\", -1)
 	json = strings.Replace(json, "\"", "\\\"", -1)
 	json = strings.Replace(json, "\r\n", "\\u000d\\u000a", -1)
 	json = strings.Replace(json, "\n", "\\u000a", -1)
+	json = strings.Replace(json, "\t", "\\u0009", -1)
 	return json
 }
 
 func JsonDecode(json string) string {
-	json = strings.Replace(json, "\\'", "'", -1)
+	json = strings.Replace(json, "\\\\", "\\", -1)
 	json = strings.Replace(json, "\\\"", "\"", -1)
 	json = strings.Replace(json, "\\u000d\\u000a", "\r\n", -1)
 	json = strings.Replace(json, "\\u000a", "\n", -1)
+	json = strings.Replace(json, "\\u0009", "\t", -1)
 	return json
 }
 
@@ -174,4 +176,99 @@ func SubString(str string, begin, length int) (substr string) {
 	}
 
 	return string(rs[begin:end])
+}
+
+func If(b bool, t, f interface{}) interface{} {
+	if b {
+		return t
+	}
+	return f
+}
+
+func AjaxPageList(count, pageCount, takeNum, pageIndex int) string {
+	html := ""
+
+	if count > 0 {
+		midhtml := ""
+		s0 := "首页"
+		s1 := "上页"
+		s2 := "下页"
+		s3 := "末页"
+		s4 := "GO"
+		pageButtonText := "共 {count} 条记录 {pageCount} 页 每页{takeNum}条 当前第 {pageIndex} 页"
+
+		html = strings.Replace(pageButtonText, "{count}", ToStr(count), -1)
+		html = strings.Replace(html, "{pageCount}", ToStr(pageCount), -1)
+		html = strings.Replace(html, "{pageIndex}", ToStr(pageIndex), -1)
+		html = strings.Replace(html, "{takeNum}",
+			"<select onchange=\"bindData("+ToStr(pageIndex)+",$(this).val());\">"+
+				"<option"+ToStr(If(takeNum == 5, " selected=\"selected\"", ""))+">5</option>"+
+				"<option"+ToStr(If(takeNum == 10, " selected=\"selected\"", ""))+">10</option>"+
+				"<option"+ToStr(If(takeNum == 15, " selected=\"selected\"", ""))+">15</option>"+
+				"<option"+ToStr(If(takeNum == 20, " selected=\"selected\"", ""))+">20</option>"+
+				"<option"+ToStr(If(takeNum == 25, " selected=\"selected\"", ""))+">25</option>"+
+				"<option"+ToStr(If(takeNum == 30, " selected=\"selected\"", ""))+">30</option>"+
+				"<option"+ToStr(If(takeNum == 35, " selected=\"selected\"", ""))+">35</option>"+
+				"<option"+ToStr(If(takeNum == 40, " selected=\"selected\"", ""))+">40</option>"+
+				"<option"+ToStr(If(takeNum == 45, " selected=\"selected\"", ""))+">45</option>"+
+				"<option"+ToStr(If(takeNum == 50, " selected=\"selected\"", ""))+">50</option>"+
+				"<option"+ToStr(If(takeNum == 100, " selected=\"selected\"", ""))+">100</option>"+
+				"<option"+ToStr(If(takeNum == 200, " selected=\"selected\"", ""))+">200</option>"+
+				"<option"+ToStr(If(takeNum == 500, " selected=\"selected\"", ""))+">500</option>"+
+				"</select>", -1)
+		PageNum := 5
+		k := PageNum / 2
+		j := pageIndex - k
+		if j+PageNum > pageCount {
+			j = pageCount - PageNum + 1
+		}
+		if j <= 0 {
+			j = 1
+		}
+		for i := j; i < PageNum+j; i++ {
+			if i > pageCount {
+				break
+			}
+			midhtml += " <a href=\"javascript:void(0)\" onclick=\"bindData(" + ToStr(i) + "," + ToStr(takeNum) + ");\" style=\"padding:0px 3px;\"" + ToStr(If(pageIndex == i, " disabled", "")) + ">" + ToStr(i) + "</a> "
+		}
+
+		html += "<span><a href=\"javascript:void(0)\" onclick=\"bindData(1," +
+			ToStr(takeNum) +
+			");\" style=\"padding:0px 3px;\"" +
+			ToStr(If(pageIndex <= 1, " disabled", "")) +
+			">" +
+			s0 +
+			"</a> <a href=\"javascript:void(0)\" onclick=\"bindData(" +
+			ToStr(If(pageIndex <= 1, 1, pageIndex-1)) +
+			"," +
+			ToStr(takeNum) +
+			");\" style=\"padding:0px 3px;\"" +
+			ToStr(If(pageIndex <= 1, " disabled", "")) +
+			">" +
+			s1 +
+			"</a> " +
+			midhtml +
+			" <a href=\"javascript:void(0)\" onclick=\"bindData(" +
+			ToStr(If(pageIndex >= pageCount, pageIndex, pageIndex+1)) +
+			"," +
+			ToStr(takeNum) +
+			");\" style=\"padding:0px 3px;\"" +
+			ToStr(If(pageIndex >= pageCount, " disabled", "")) +
+			">" +
+			s2 +
+			"</a> <a href=\"javascript:void(0)\" onclick=\"bindData(" +
+			ToStr(pageCount) +
+			"," +
+			ToStr(takeNum) +
+			");\" style=\"padding:0px 3px;\"" +
+			ToStr(If(pageIndex >= pageCount, " disabled", "")) +
+			">" +
+			s3 +
+			"</a> <input type=\"text\" style=\"margin:0px 3px; font-size:12px; width:30px; height:15px;\" attr=\"num\" value=\"" +
+			ToStr(pageIndex) +
+			"\"> <a href=\"javascript:void(0)\" onclick=\"bindData($(this).parent().find('input').first().val()," +
+			ToStr(takeNum) + ");\">" + s4 + "</a></span>"
+	}
+
+	return JsonEncode(html)
 }
