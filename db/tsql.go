@@ -3,6 +3,7 @@ package db
 import (
 	"database/sql"
 	"fmt"
+	//_ "odbc"
 	_ "sqlite3"
 )
 
@@ -11,6 +12,7 @@ var DbConnectionString string
 
 func Init(dbConnectionString string) {
 	DbTypeName = "sqlite3"
+	//DbTypeName = "odbc"
 	DbConnectionString = dbConnectionString
 }
 
