@@ -4,16 +4,16 @@ gookee
 go web mvc框架
 
 
-#注册路由
+# 注册路由
 	gookee.Route{"/{action}", "index", Home}.Regist()
 	gookee.Route{"/manage/{action}", "index", Manage}.Regist()
 
-#注册拦截器实现全局权限控制、注入等
+# 注册拦截器实现全局权限控制、注入等
 	gookee.Func(power)
 
-#示例
+# 示例
 
-##拦截器示例
+## 拦截器示例
 
 	func power(httpcontext *gookee.HttpContext) bool {
 		r := httpcontext.Request
@@ -29,9 +29,9 @@ go web mvc框架
 	}
 
 
-##controller示例（home控制器 index页面）
+## controller示例（home控制器 index页面）
 
-###Post请求
+### Post请求
 
 	type Home struct{}
 
@@ -51,7 +51,7 @@ go web mvc框架
 		}
 	}
 
-###Get请求
+### Get请求
 
 	func (h *Home) IndexGet(httpcontext *gookee.HttpContext) {
 		w := httpcontext.ResponseWriter
